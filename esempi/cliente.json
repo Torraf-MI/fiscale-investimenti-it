@@ -1,0 +1,112 @@
+{
+  "cliente": "Famiglia Rossi",
+  "data_analisi": "2026-11-12",
+  "movimenti": "../data/movimenti_esempio.csv",
+  "prezzi": {
+    "Azioni Banca Italiana": 17.4,
+    "Certificate Cash Collect Banche": 98.5,
+    "ETF Azionario Mondo": 118.0,
+    "BTP 2033 3,50%": 99.2,
+    "ETC Oro fisico": 345.0,
+    "Obbligazione Industriale 2029 4%": 101.3
+  },
+  "zainetto_iniziale": {},
+  "strumenti": [
+    {
+      "nome": "ETF Obbligazionario Euro",
+      "tipo": "etf",
+      "quota_stato": 0.65,
+      "rendimento": 0.025,
+      "volatilita": 0.06,
+      "gruppo": "obbligazioni",
+      "spread": 0.001
+    },
+    {
+      "nome": "Azioni Banca Italiana",
+      "tipo": "azione_it",
+      "rendimento": 0.06,
+      "volatilita": 0.26,
+      "flusso": 0.06,
+      "spread": 0.001
+    },
+    {
+      "nome": "Azioni Tecnologia USA",
+      "tipo": "azione_estera",
+      "ritenuta_estera": 0.15,
+      "rendimento": 0.08,
+      "volatilita": 0.28,
+      "flusso": 0.007,
+      "spread": 0.001
+    },
+    {
+      "nome": "Certificate Cash Collect Banche",
+      "tipo": "certificate",
+      "scadenza": "2028-03-01",
+      "volatilita": 0.1,
+      "flusso": 0.078,
+      "spread": 0.004
+    },
+    {
+      "nome": "ETF Azionario Mondo",
+      "tipo": "etf",
+      "rendimento": 0.07,
+      "volatilita": 0.16,
+      "spread": 0.0005
+    },
+    {
+      "nome": "BTP 2033 3,50%",
+      "tipo": "titolo_stato",
+      "cedola": 0.035,
+      "scadenza": "2033-03-01",
+      "volatilita": 0.05,
+      "gruppo": "obbligazioni",
+      "spread": 0.0015
+    },
+    {
+      "nome": "ETC Oro fisico",
+      "tipo": "etc",
+      "rendimento": 0.04,
+      "volatilita": 0.15,
+      "gruppo": "oro",
+      "spread": 0.0008
+    },
+    {
+      "nome": "Azioni Energia Italia",
+      "tipo": "azione_it",
+      "rendimento": 0.05,
+      "volatilita": 0.24,
+      "flusso": 0.05,
+      "spread": 0.001
+    },
+    {
+      "nome": "Obbligazione Industriale 2029 4%",
+      "tipo": "obbligazione",
+      "cedola": 0.04,
+      "scadenza": "2029-06-15",
+      "volatilita": 0.025,
+      "gruppo": "obbligazioni",
+      "spread": 0.003
+    },
+    {
+      "nome": "ETF Azionario Emergenti",
+      "tipo": "etf",
+      "rendimento": 0.07,
+      "volatilita": 0.2,
+      "spread": 0.001
+    }
+  ],
+  "costi": {
+    "percentuale": 0.0019,
+    "minimo": 2.95,
+    "massimo": 19.0,
+    "riacquisto_stesso_giorno": true
+  },
+  "simulazione": {
+    "anni": 5,
+    "scenari": 1000,
+    "tasso_liquidita": 0.02,
+    "soglia_perdita": 0.03
+  },
+  "anni_vendita": 5,
+  "tasso_sconto": 0.03
+}

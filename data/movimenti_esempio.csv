@@ -1,0 +1,77 @@
+data,operazione,strumento,quantita,prezzo,importo,commissioni
+2021-03-15,acquisto,ETF Obbligazionario Euro,1000.0,100.0,0.0,19.0
+2021-06-10,acquisto,Azioni Banca Italiana,2000.0,10.0,0.0,19.0
+2022-02-07,acquisto,Azioni Tecnologia USA,100.0,150.0,0.0,19.0
+2022-05-23,dividendo,Azioni Banca Italiana,0.0,0.0,1200.0,0.0
+2022-08-12,dividendo,Azioni Tecnologia USA,0.0,0.0,92.0,0.0
+2022-10-14,vendita,ETF Obbligazionario Euro,1000.0,82.5,0.0,19.0
+2022-12-16,vendita,Azioni Tecnologia USA,100.0,105.0,0.0,19.0
+2023-03-01,acquisto,Certificate Cash Collect Banche,250.0,100.0,0.0,19.0
+2023-04-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2023-05-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2023-05-08,acquisto,ETF Azionario Mondo,600.0,80.0,0.0,19.0
+2023-05-22,dividendo,Azioni Banca Italiana,0.0,0.0,1400.0,0.0
+2023-06-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2023-07-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2023-07-12,acquisto,"BTP 2033 3,50%",400.0,92.0,0.0,19.0
+2023-08-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2023-09-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2023-09-01,cedola,"BTP 2033 3,50%",0.0,0.0,700.0,0.0
+2023-10-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2023-11-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2023-12-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-01-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-01-15,acquisto,ETC Oro fisico,80.0,190.0,0.0,19.0
+2024-02-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-03-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-03-01,cedola,"BTP 2033 3,50%",0.0,0.0,700.0,0.0
+2024-03-04,acquisto,Azioni Energia Italia,1000.0,12.0,0.0,19.0
+2024-04-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-05-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-05-20,dividendo,Azioni Banca Italiana,0.0,0.0,1700.0,0.0
+2024-05-20,acquisto,Obbligazione Industriale 2029 4%,200.0,97.0,0.0,19.0
+2024-06-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-06-15,cedola,Obbligazione Industriale 2029 4%,0.0,0.0,800.0,0.0
+2024-07-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-08-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-09-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-09-01,cedola,"BTP 2033 3,50%",0.0,0.0,700.0,0.0
+2024-09-20,vendita,Azioni Energia Italia,1000.0,9.2,0.0,17.48
+2024-10-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-11-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2024-12-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-01-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-01-20,acquisto,ETF Azionario Emergenti,300.0,50.0,0.0,19.0
+2025-02-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-03-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-03-01,cedola,"BTP 2033 3,50%",0.0,0.0,700.0,0.0
+2025-04-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-04-08,vendita,ETF Azionario Emergenti,300.0,41.0,0.0,19.0
+2025-05-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-05-19,dividendo,Azioni Banca Italiana,0.0,0.0,1900.0,0.0
+2025-06-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-06-15,cedola,Obbligazione Industriale 2029 4%,0.0,0.0,800.0,0.0
+2025-07-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-08-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-09-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-09-01,cedola,"BTP 2033 3,50%",0.0,0.0,700.0,0.0
+2025-09-15,vendita,Azioni Banca Italiana,500.0,15.0,0.0,14.25
+2025-10-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-11-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2025-12-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-01-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-02-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-03-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-03-01,cedola,"BTP 2033 3,50%",0.0,0.0,700.0,0.0
+2026-04-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-05-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-05-18,dividendo,Azioni Banca Italiana,0.0,0.0,1500.0,0.0
+2026-06-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-06-15,vendita,ETF Azionario Mondo,200.0,112.0,0.0,19.0
+2026-06-15,cedola,Obbligazione Industriale 2029 4%,0.0,0.0,800.0,0.0
+2026-07-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-08-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-09-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-09-01,cedola,"BTP 2033 3,50%",0.0,0.0,700.0,0.0
+2026-10-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0
+2026-11-01,premio,Certificate Cash Collect Banche,0.0,0.0,162.5,0.0

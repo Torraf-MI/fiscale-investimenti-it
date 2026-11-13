@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiscalità del dossier – {{ cliente }}</title>
+{% if plotly_inline %}<script>{{ plotly_inline | safe }}</script>{% else %}<script src="{{ plotly_cdn }}"></script>{% endif %}
+<style>
+  :root { --blu: #1f4e79; --grigio: #595959; --chiaro: #f2f5f9; }
+  body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; color: #222; max-width: 1000px;
+         margin: 0 auto; padding: 32px 16px 60px; line-height: 1.5; background: #fff; }
+  header { border-bottom: 3px solid var(--blu); padding-bottom: 12px; margin-bottom: 24px; }
+  h1 { color: var(--blu); margin: 0 0 4px; font-size: 1.7rem; }
+  h2 { color: var(--blu); font-size: 1.2rem; margin-top: 38px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+  h3 { font-size: 1rem; margin: 22px 0 6px; }
+  .sub { color: var(--grigio); font-size: .92rem; }
+  .kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0; }
+  .kpi div { background: var(--chiaro); border-radius: 8px; padding: 12px 14px; }
+  .kpi b { display: block; font-size: 1.35rem; color: var(--blu); }
+  .kpi span { font-size: .78rem; color: var(--grigio); text-transform: uppercase; letter-spacing: .03em; }
+  .kpi small { display: block; font-size: .8rem; color: var(--grigio); }
+  .esito { border-left: 5px solid #fab219; background: #fff8e8; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+  .azione { border-left: 5px solid #1baf7a; background: #effaf5; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .86rem; margin: 10px 0; }
+  th, td { padding: 6px 9px; text-align: right; border-bottom: 1px solid #e5e5e5; }
+  th:first-child, td:first-child { text-align: left; }
+  td.testo, th.testo { text-align: left; }
+  th { background: var(--blu); color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  tr.evidenza td { font-weight: 600; background: #fdecea; }
+  td.neg { color: #c0392b; }
+  .pallino { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .scroll { overflow-x: auto; }
+  .scroll table { white-space: nowrap; }
+  .lungo { max-height: 420px; overflow: auto; border: 1px solid #eee; }
+  .grafico { margin: 14px 0; overflow: hidden; }
+  .note { font-size: .8rem; color: var(--grigio); background: var(--chiaro); padding: 12px 14px; border-radius: 6px; }
+  ul { padding-left: 20px; }
+  @media print { .grafico { break-inside: avoid; } .lungo { max-height: none; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Fiscalità del dossier titoli e zainetto fiscale</h1>
+  <div class="sub">Preparato per <b>{{ cliente }}</b> · regime amministrato · situazione al {{ data_analisi }} · report del {{ oggi }}</div>
+</header>
+
+<h2>Sintesi</h2>
+<div class="kpi">
+  {% for label, value, n in kpi %}<div><span>{{ label }}</span><b>{{ value }}</b><small>{{ n }}</small></div>{% endfor %}
+</div>
+{% if piano.obiettivo > 0.5 %}
+<div class="esito">Il {{ "31/12/" ~ anno }} scadono <b>{{ obiettivo }}</b> di minusvalenze. Se non si fa nulla vanno perse.
+{% if piano.azioni %}Con {{ piano.azioni | length }} operazion{{ "e" if piano.azioni | length == 1 else "i" }} di vendita e riacquisto
+se ne recuperano <b>{{ recuperato }}</b>, con un costo di {{ costo }}: il costo fiscale degli strumenti sale e alla
+vendita futura si pagheranno {{ risparmio }} di imposte in meno.{% endif %}
+{% if piano.perso > 0.5 %} Restano comunque perse {{ perso }}: nel portafoglio non ci sono abbastanza plusvalenze
+compensabili.{% endif %}</div>
+{% endif %}
+
+<h2>Le regole in breve</h2>
+<p>In Italia i redditi finanziari si dividono in due categorie che non comunicano tra loro. I <b>redditi di
+capitale</b> (cedole, dividendi, proventi e guadagni di ETF e fondi) sono tassati subito e per intero. I <b>redditi
+diversi</b> (plusvalenze su azioni, obbligazioni, ETC e certificates, premi dei certificates, perdite di ogni tipo)
+si compensano tra loro: una minusvalenza resta nello <b>zainetto fiscale</b> e riduce le plusvalenze dello stesso anno
+e dei {{ 4 }} anni successivi, poi scade. L'aliquota è il {{ aliquota }}, ma sui titoli di Stato italiani e dei Paesi
+della white list scende al 12,5%: tecnicamente si tassa al 26% il {{ quota_stato }} del reddito, e nella stessa misura
+le loro plusvalenze consumano lo zainetto.</p>
+<div class="scroll"><table>
+  <tr><th>Strumento</th><th class="testo">Guadagni</th><th class="testo">Perdite</th><th class="testo">Flussi periodici</th><th>Aliquota</th></tr>
+  {% for r in regole %}<tr><td>{{ r.tipo }}</td><td class="testo">{{ r.plus }}</td><td class="testo">{{ r.minus }}</td><td class="testo">{{ r.flussi }} ({{ r.nome_flusso }})</td><td>{{ r.aliquota }}</td></tr>{% endfor %}
+</table></div>
+<p>La conseguenza più importante è un'asimmetria: <b>le perdite di un ETF entrano nello zainetto, i suoi guadagni non
+possono usarlo</b>. Per ETF e fondi che investono in titoli di Stato l'aliquota scende in proporzione alla loro quota.</p>
+<div class="grafico">{{ grafici.aliquote | safe }}</div>
+
+<h2>Lo storico fiscale</h2>
+<div class="grafico">{{ grafici.imposte | safe }}</div>
+<div class="scroll"><table>
+  <tr><th>Anno</th>{% for c in colonne_riepilogo %}<th style="white-space:normal">{{ c }}</th>{% endfor %}</tr>
+  {% for r in riepilogo %}<tr><td>{{ r.anno }}</td>{% for c in colonne_riepilogo %}<td>{{ r[c] }}</td>{% endfor %}</tr>{% endfor %}
+</table></div>
+{% if etf_plus %}
+<div class="esito">{% for e in etf_plus %}Il {{ e.data }} la vendita di {{ e.strumento }} ha realizzato un guadagno di
+{{ e.reddito }} e pagato <b>{{ e.imposta }}</b> di imposte, mentre lo zainetto conteneva {{ e.zainetto }} di
+minusvalenze. {% endfor %}Il guadagno di un ETF è un reddito di capitale e lo zainetto non lo può compensare.</div>
+{% endif %}
+<h3>Registro fiscale</h3>
+<p class="sub">Ogni movimento con il suo effetto fiscale, calcolato come fa la banca nel regime amministrato: costo
+medio ponderato, compensazione immediata con le minusvalenze più vecchie, imposta sostitutiva trattenuta.</p>
+<div class="scroll lungo"><table>
+  <tr><th>Data</th><th class="testo">Strumento</th><th class="testo">Operazione</th><th class="testo">Categoria</th><th>Reddito</th><th>Imponibile</th><th>Compensato</th><th>Imposta</th><th>Minus nello zainetto</th><th>Zainetto</th></tr>
+  {% for r in registro %}<tr><td>{{ r.data }}</td><td class="testo">{{ r.strumento }}</td><td class="testo">{{ r.operazione }}</td><td class="testo">{{ r.categoria }}</td><td class="{{ 'neg' if r.neg }}">{{ r.reddito }}</td><td>{{ r.imponibile }}</td><td>{{ r.compensato }}</td><td>{{ r.imposta }}</td><td>{{ r.minus }}</td><td>{{ r.zainetto }}</td></tr>{% endfor %}
+</table></div>
+
+<h2>Lo zainetto fiscale</h2>
+<div class="grafico">{{ grafici.storia | safe }}</div>
+<div class="grafico">{{ grafici.zainetto | safe }}</div>
+<div class="scroll"><table>
+  <tr><th>Ultimo giorno utile</th><th>Anno di realizzo</th><th>Residuo oggi</th><th>Dopo il piano</th></tr>
+  {% for z in zainetto %}<tr class="{{ 'evidenza' if z.rosso }}"><td>{{ z.scadenza }}</td><td>{{ z.realizzo }}</td><td>{{ z.oggi }}</td><td>{{ z.dopo }}</td></tr>{% endfor %}
+</table></div>
+<p class="sub">Le minusvalenze sono già ridotte al {{ quota_stato }} per la parte che deriva da titoli di Stato. La banca
+usa sempre per prime quelle più vecchie.</p>
+
+<h2>Plusvalenze e minusvalenze latenti</h2>
+<div class="grafico">{{ grafici.latenti | safe }}</div>
+<div class="scroll"><table>
+  <tr><th>Strumento</th><th>Quantità</th><th>Costo medio</th><th>Prezzo</th><th>Valore</th><th>Latente</th><th class="testo">Categoria</th><th>Quota imponibile</th><th>Imposta latente</th><th>Usa lo zainetto</th></tr>
+  {% for r in latenti %}<tr><td>{{ r.strumento }}</td><td>{{ r.quantita }}</td><td>{{ r.costo }}</td><td>{{ r.prezzo }}</td><td>{{ r.valore }}</td><td class="{{ 'neg' if r.neg }}">{{ r.latente }}</td><td class="testo">{{ r.categoria }}</td><td>{{ r.fattore }}</td><td>{{ r.imposta }}</td><td>{{ r.compensabile }}</td></tr>{% endfor %}
+</table></div>
+<p>Le plusvalenze latenti su strumenti che producono redditi diversi valgono {{ capacita }} di base imponibile: è la
+capacità del portafoglio di assorbire minusvalenze senza nuovi acquisti.</p>
+
+<h2>Il piano di fine anno</h2>
+{% if azioni %}
+<div class="azione">Entro il 31/12/{{ anno }}: {% for x in azioni %}vendere e riacquistare <b>{{ x.quantita }}
+{{ x.strumento }}</b> (circa {{ x.controvalore }}){% if not loop.last %}; {% endif %}{% endfor %}. Le plusvalenze
+realizzate assorbono {{ recuperato }} di minusvalenze in scadenza senza pagare imposte, e il costo medio fiscale sale.
+L'imposta futura evitata è {{ risparmio }}; scontata al {{ tasso }} su {{ anni_vendita }} anni e tolti i costi, il
+piano vale oggi <b>{{ valore_attuale }}</b>.</div>
+<div class="grafico">{{ grafici.piano | safe }}</div>
+<div class="scroll"><table>
+  <tr><th>Strumento</th><th>Quantità</th><th>Prezzo</th><th>Controvalore</th><th>Plusvalenza</th><th>Imponibile</th><th>Minus recuperate</th><th>Costi</th><th>Costo medio prima</th><th>Costo medio dopo</th></tr>
+  {% for x in azioni %}<tr><td>{{ x.strumento }}</td><td>{{ x.quantita }}</td><td>{{ x.prezzo }}</td><td>{{ x.controvalore }}</td><td>{{ x.plus }}</td><td>{{ x.base }}</td><td>{{ x.recuperato }}</td><td>{{ x.costo }}</td><td>{{ x.prima }}</td><td>{{ x.dopo }}</td></tr>{% endfor %}
+</table></div>
+<p class="sub">Gli strumenti sono scelti in ordine di plusvalenza per euro venduto, così il controvalore da negoziare
+(e quindi il costo) è il più basso. I titoli di Stato vengono per ultimi: per assorbire 100 € di minusvalenze devono
+realizzare 208 € di plusvalenze. Il riacquisto nello stesso giorno mantiene invariato il portafoglio e, per le azioni
+italiane, azzera la Tobin tax, che si calcola sul saldo netto giornaliero.</p>
+{% else %}
+<p>Quest'anno non scadono minusvalenze{% if piano.obiettivo > 0.5 %} recuperabili: nel portafoglio non ci sono
+plusvalenze compensabili{% endif %}.</p>
+{% endif %}
+<h3>Tre regole pratiche</h3>
+<ul>
+  <li><b>Prima le perdite, poi i guadagni.</b> Nel regime amministrato una minusvalenza compensa solo le plusvalenze
+  realizzate dopo: chi vende in guadagno a marzo e in perdita a ottobre paga le imposte di marzo e mette la perdita
+  nello zainetto.</li>
+  <li><b>Non tutte le perdite conviene realizzarle.</b> Vendere e riacquistare un ETF in perdita crea una minusvalenza
+  utile solo se entro quattro anni ci saranno redditi diversi da compensare; in cambio abbassa il costo fiscale e
+  il guadagno futuro dell'ETF, tassato come reddito di capitale, sarà più alto.</li>
+  <li><b>Con lo zainetto pieno conta il veicolo.</b> Lo stesso investimento fatto con azioni, ETC, certificates o
+  obbligazioni dirette produce redditi diversi che consumano lo zainetto; fatto con un ETF no.</li>
+</ul>
+
+<h2>Il veicolo conta</h2>
+<p>Un guadagno lordo di {{ guadagno_veicoli }} con lo zainetto che resterà dopo il piano ({{ saldo_dopo }}):</p>
+<div class="scroll"><table>
+  <tr><th>Veicolo</th><th class="testo">Categoria del guadagno</th><th>Aliquota</th><th>Zainetto usato</th><th>Imposta</th><th>Netto</th><th>Aliquota effettiva</th></tr>
+  {% for v in veicoli %}<tr><td>{{ v.veicolo }}</td><td class="testo">{{ v.categoria }}</td><td>{{ v.nominale }}</td><td>{{ v.usato }}</td><td>{{ v.imposta }}</td><td>{{ v.netto }}</td><td>{{ v.effettiva }}</td></tr>{% endfor %}
+</table></div>
+<div class="grafico">{{ grafici.veicoli | safe }}</div>
+<p class="sub">I titoli di Stato hanno l'aliquota più bassa ma consumano lo zainetto solo al {{ quota_stato }}: con molte
+minusvalenze da recuperare, azioni, ETC, certificates e obbligazioni societarie lo svuotano più in fretta. Il confronto
+riguarda solo l'imposta: rischio, costi e commissioni di gestione dei diversi strumenti restano da valutare.</p>
+
+{% if sim %}
+<h2>Quanto vale nel tempo: simulazione {{ sim_anni }}</h2>
+<p>Partendo dal portafoglio di oggi si simulano {{ sim_par.scenari }} scenari di mercato per {{ sim_par.anni }} anni e,
+sugli stessi scenari, tre comportamenti: non fare nulla, recuperare ogni dicembre le minusvalenze in scadenza, oppure
+anche vendere e riacquistare ogni dicembre tutte le posizioni in perdita. Alla fine si vende tutto, così il patrimonio
+è confrontato al netto di ogni imposta, del bollo e dei costi.</p>
+<div class="scroll"><table>
+  <tr><th>Strategia</th><th>Patrimonio netto finale</th><th>Imposte</th><th>Costi</th><th>Minus scadute</th><th>Differenza media</th><th>5° percentile</th><th>95° percentile</th><th>Scenari migliori</th></tr>
+  {% for r in sim %}<tr><td><span class="pallino" style="background:{{ r.colore }}"></span>{{ r.strategia }}</td><td>{{ r.netto }}</td><td>{{ r.imposte }}</td><td>{{ r.costi }}</td><td>{{ r.scadute }}</td><td>{{ r.media }}</td><td>{{ r.p5 }}</td><td>{{ r.p95 }}</td><td>{{ r.migliori }}</td></tr>{% endfor %}
+</table></div>
+<div class="grafico">{{ grafici.simulazione | safe }}</div>
+<p>Senza fare nulla scadono in media {{ scad_passiva }} di minusvalenze. Recuperarle ogni anno lascia in media
+<b>{{ rec_media }}</b> in più e conviene nel {{ rec_migliori }} degli scenari. Realizzare anche tutte le perdite
+aggiunge in media {{ racc_media }}: fa meglio nel {{ racc_meglio }} degli scenari e peggio nel {{ racc_peggio }}.
+Il valore sta nel non perdere le minusvalenze, non nel generarne di nuove.</p>
+<div class="grafico">{{ grafici.raccolta | safe }}</div>
+{% endif %}
+
+<h2>Metodo e avvertenze</h2>
+<div class="note">
+<p>Il calcolo segue il regime amministrato per una persona fisica residente: costo medio ponderato con le commissioni
+di acquisto, imposta sostitutiva del 26% (12,5% sui titoli di Stato tramite la riduzione al 48,08% della base
+imponibile, anche pro quota per ETF e fondi), compensazione delle minusvalenze solo con le plusvalenze successive e
+dalla più vecchia, scadenza al 31 dicembre del quarto anno successivo, dividendi esteri tassati al netto della
+ritenuta estera. Non sono considerati lo scarto di emissione delle obbligazioni, le cripto-attività, i redditi
+d'impresa, il regime gestito e quello dichiarativo, il credito per le imposte estere né l'IVAFE.
+In Italia non esiste una regola sulle «wash sale»: vendere e riacquistare per realizzare una plusvalenza o una
+minusvalenza è prassi comune, ma va valutato caso per caso alla luce del divieto di abuso del diritto.
+La simulazione usa modelli di prezzo semplici (moto browniano geometrico e ponte browniano verso il rimborso).</p>
+{% if data_note %}<p>{{ data_note }}</p>{% endif %}
+<p>Il report ha scopo dimostrativo e non costituisce consulenza fiscale né finanziaria.</p>
+</div>
+</body>
+</html>
